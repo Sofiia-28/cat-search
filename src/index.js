@@ -30,17 +30,17 @@ function fetchBreeds() {
 //   }
 
 fetchBreeds().then((data) => {
-    catCard.insertAdjacentHTML("afterBegin", createCatCardMarkup(data));
+    // catCard.insertAdjacentHTML("afterBegin", createCatCardMarkup(data));
     breedSelect.insertAdjacentHTML("afterBegin", createSelectMarkup(data));
 });
 
-function createCatCardMarkup(arr) {
-    return arr.map(({name, description, temperament, id, reference_image_id
-    }) => `<h1 class="cat-name">${name}</h1>
-    <p class="cat-description">${description}</p>
-    <p class="cat-description"><span class="cat-temperament">Temperament: </span>${temperament}</p>
-    <img class="cat-image" src="https://cdn2.thecatapi.com/images/${reference_image_id}.jpg" alt="${name} cat"`).join("")
-}
+// function createCatCardMarkup(arr) {
+//     return arr.map(({name, description, temperament, id, reference_image_id
+//     }) => `<h1 class="cat-name">${name}</h1>
+//     <p class="cat-description">${description}</p>
+//     <p class="cat-description"><span class="cat-temperament">Temperament: </span>${temperament}</p>
+//     <img class="cat-image" src="https://cdn2.thecatapi.com/images/${reference_image_id}.jpg" alt="${name} cat"`).join("")
+// }
 
 function createSelectMarkup(arr) {
     return arr.map(({name, id}) => `<option id="${id}">${name}</option>`).join("")
