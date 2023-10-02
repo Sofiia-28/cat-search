@@ -1,54 +1,32 @@
-import axios from "axios";
-// import fetchBreeds from './cat-api.js'
+import {fetchBreeds, fetchCatByBreed} from './cat-api.js'
+import SlimSelect from 'slim-select'
 
-axios.defaults.headers.common["x-api-key"] = "live_Eo9WWuFEbqhH5kqqFsiPK3PaoOXAmftsLGMmpkhH78a4WfAsOyT5TpfWOn12afqP";
+export const breedSelect = document.querySelector(".breed-select") 
+export const catCard = document.querySelector(".cat-info")
 
-const catCard = document.querySelector(".cat-info")
-const breedSelect = document.querySelector(".breed-select")
+// new SlimSelect({
+//   select: breedSelect,
+// })
 
-function fetchBreeds() {
-    const BASE_URL = 'https://api.thecatapi.com/v1';
-    const END_POINT = '/breeds';
-  
-    return fetch(`${BASE_URL}${END_POINT}`)
-    .then(resp => {
-      if (!resp.ok) {
-        throw new Error(resp.statusText);
-      }
-      return resp.json();
-    });
-  }
-
-//   function fetchCatByBreed(breedId) {
-//     return fetch(`https://api.thecatapi.com/v1/images/search?breed_ids=${breedId}`)
-//     .then(resp => {
-//       if (!resp.ok) {
-//         throw new Error(resp.statusText);
-//       }
-//       return resp.json();
-//     });
-//   }
-
-fetchBreeds().then((data) => {
-    // catCard.insertAdjacentHTML("afterBegin", createCatCardMarkup(data));
-    breedSelect.insertAdjacentHTML("afterBegin", createSelectMarkup(data));
-});
-
-// function createCatCardMarkup(arr) {
-//     return arr.map(({name, description, temperament, id, reference_image_id
-//     }) => `<h1 class="cat-name">${name}</h1>
-//     <p class="cat-description">${description}</p>
-//     <p class="cat-description"><span class="cat-temperament">Temperament: </span>${temperament}</p>
-//     <img class="cat-image" src="https://cdn2.thecatapi.com/images/${reference_image_id}.jpg" alt="${name} cat"`).join("")
-// }
-
-function createSelectMarkup(arr) {
-    return arr.map(({name, id}) => `<option id="${id}">${name}</option>`).join("")
-}
-
+fetchBreeds();
 breedSelect.addEventListener("change", chooseCat);
 
 function chooseCat(event) {
-
-
+    event.preventDefault();
+    const breedId = breedSelect.value;
+    fetchCatByBreed(breedId);
 }
+
+export function createCatCardMarkup(arr) {
+    return arr.map(({url, breeds: [{name, description, temperament}]}) =>
+    `<img class="cat-image" src="${url}" alt="${name} cat" width="400"/>
+    <div class="cat-description"> <h1 class="cat-name">${name}</h1>
+    <p>${description}</p>
+    <p><b>Temperament: </b>${temperament}</p></div>`
+    ).join("")
+}
+
+export function createSelectMarkup(arr) {
+    return arr.map(({name, id}) => `<option value="${id}">${name}</option>`).join("")
+}
+
